@@ -16,10 +16,19 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(webView);
     this->setLayout(layout);
 
-    // do actions on startup
+    // set window properties
     this->setWindowTitle("breasy");
-    webView->load(QUrl("http://google.de/"));
-    webView->show();
+}
+
+void MainWindow::openCliUrls(int argc, char *argv[])
+{
+    //for (int i = 1; i < argc; i++) TODO: change when tabbed interface is implemented
+    for (int i = 1; i < 2; i++)
+    {
+        QString url(argv[i]);
+        webView->load(QUrl(url));
+        urlEdit->setText(url);
+    }
 }
 
 void MainWindow::urlEdit_returnPressed()

@@ -13,6 +13,7 @@ class MainWindow : public QWidget
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void openCliUrls(int argc, char *argv[]);
 
 private slots:
     void urlEdit_returnPressed();
