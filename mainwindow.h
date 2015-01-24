@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QWebView>
 #include <QVBoxLayout>
+#include <QKeyEvent>
 
 class MainWindow : public QWidget
 {
@@ -17,6 +18,9 @@ public:
 
 private slots:
     void urlEdit_returnPressed();
+
+protected:
+    void keyPressEvent(QKeyEvent *event);
 
 private:
     QWebView* webView;
