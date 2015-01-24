@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(urlEdit, SIGNAL(returnPressed()), this, SLOT(urlEdit_returnPressed()));
 
     // layout window
+    layout->setMargin(0);
+    layout->setSpacing(0);
     layout->addWidget(urlEdit);
     layout->addWidget(webView);
     this->setLayout(layout);
@@ -61,7 +63,22 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             default:
                 QWidget::keyPressEvent(event);
         }
-    } else
+    }
+    else if (event->modifiers() & Qt::AltModifier)
+    {
+        switch (event->key())
+        {
+            case Qt::Key_Left:
+                webView->back();
+                break;
+            case Qt::Key_Right:
+                webView->forward();
+                break;
+            default:
+                QWidget::keyPressEvent(event);
+        }
+    }
+    else
     {
         switch (event->key())
         {
