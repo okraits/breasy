@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLineEdit>
+#include <QTabWidget>
 #include <QWebView>
 #include <QVBoxLayout>
 #include <QKeyEvent>
@@ -18,13 +19,15 @@ public:
 
 private slots:
     void urlEdit_returnPressed();
+    void tabWidget_currentChanged(int index);
 
 protected:
     void keyPressEvent(QKeyEvent *event);
 
 private:
-    QWebView* webView;
     QLineEdit* urlEdit;
+    QTabWidget* tabWidget;
+    QWebView* currWebView();
 };
 
 #endif // MAINWINDOW_H

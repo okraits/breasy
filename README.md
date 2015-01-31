@@ -97,6 +97,8 @@ GNU General Public License v2:
 ### Todo list
 
 - tabbed interface
+- focus webview after page has loaded
+- set tab title after page has loaded
 - adblock
 - page loadstatus indicator
 - keyword based search
