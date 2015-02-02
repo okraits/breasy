@@ -19,13 +19,16 @@ MainWindow::MainWindow(QWidget *parent)
     layout->addWidget(tabWidget);
     this->setLayout(layout);
 
-    // set window properties
+    // prepare window for startup
     this->setWindowTitle("breasy");
+    // add one tab
     tabWidget->addTab(new QWebView(), "New Tab");
+    connect(currWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
 }
 
 void MainWindow::openCliUrls(int argc, char *argv[])
 {
+    // use a tab for each url which is provided at the commandline
     //for (int i = 1; i < argc; i++) TODO: change when tabbed interface is implemented
     for (int i = 1; i < 2; i++)
     {
@@ -56,6 +59,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             case Qt::Key_T:
                 tabWidget->addTab(new QWebView(), "New Tab");
                 tabWidget->setCurrentIndex(tabWidget->count() - 1);
+                connect(currWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
                 urlEdit->selectAll();
                 urlEdit->setFocus();
                 break;
@@ -132,14 +136,13 @@ void MainWindow::urlEdit_returnPressed()
     // "/" at the beginning means searching the page for text
     if (urlEdit->text().at(0) == QString("/"))
         currWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument);
-    else
+    else // open the URL entered
     {
         // add http prefix to the url if missing
         if (!urlEdit->text().startsWith("http"))
         {
             QString url = "http://" + urlEdit->text();
             currWebView()->load(QUrl(url));
-            urlEdit->setText(url);
         }
         else
             currWebView()->load(QUrl(urlEdit->text()));
@@ -148,20 +151,44 @@ void MainWindow::urlEdit_returnPressed()
 
 void MainWindow::tabWidget_currentChanged(int index)
 {
-    // set url in location bar and title in tab, if needed
-    urlEdit->setText(currWebView()->url().toString());
+    // set url in location bar and title in tab and window title, if needed
     if (!tabWidget->tabText(tabWidget->currentIndex()).startsWith("New Tab",Qt::CaseSensitive))
+        updateURLandTitle(currWebView(), true);
+}
+
+void MainWindow::currWebView_loadFinished(bool ok)
+{
+    if (ok) // page loading was successful
     {
-        QString title = currWebView()->title().left(15); // only show first 15 chars of page title
-        if (currWebView()->title().length() > 15)
-            title += "...";
-        tabWidget->setTabText(index, title);
+        QWebView* signalView = (QWebView*) QObject::sender();
+        if (signalView != 0)
+            updateURLandTitle(signalView, signalView == currWebView());
     }
 }
 
 QWebView* MainWindow::currWebView()
 {
     return (QWebView*) tabWidget->currentWidget();
+}
+
+void MainWindow::updateURLandTitle(QWebView* webView, bool windowTitle)
+{
+    // set url in urlEdit
+    urlEdit->setText(webView->url().toString());
+    // set page title as tab text
+    if (webView->title().length() > 50)
+    {
+        QString shortTitle = webView->title().left(50); // only show first 50 chars of page title
+        shortTitle += "...";
+        tabWidget->setTabText(tabWidget->indexOf(webView), shortTitle);
+    }
+    else
+    {
+        tabWidget->setTabText(tabWidget->indexOf(webView), webView->title());
+    }
+    // also set window title if this is the current tab
+    if (windowTitle)
+        this->setWindowTitle(webView->title() + " - breasy");
 }
 
 MainWindow::~MainWindow()

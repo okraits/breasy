@@ -20,6 +20,7 @@ public:
 private slots:
     void urlEdit_returnPressed();
     void tabWidget_currentChanged(int index);
+    void currWebView_loadFinished(bool ok);
 
 protected:
     void keyPressEvent(QKeyEvent *event);
@@ -28,6 +29,7 @@ private:
     QLineEdit* urlEdit;
     QTabWidget* tabWidget;
     QWebView* currWebView();
+    void updateURLandTitle(QWebView* webView, bool windowTitle);
 };
 
 #endif // MAINWINDOW_H
