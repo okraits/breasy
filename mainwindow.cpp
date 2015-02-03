@@ -21,20 +21,23 @@ MainWindow::MainWindow(QWidget *parent)
 
     // prepare window for startup
     this->setWindowTitle("breasy");
-    // add one tab
-    tabWidget->addTab(new QWebView(), "New Tab");
-    connect(currWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
 }
 
-void MainWindow::openCliUrls(int argc, char *argv[])
+void MainWindow::processCliUrls(int argc, char *argv[])
 {
-    // use a tab for each url which is provided at the commandline
-    //for (int i = 1; i < argc; i++) TODO: change when tabbed interface is implemented
-    for (int i = 1; i < 2; i++)
+    if (argc > 1) // if at least one url is given at the commandline
     {
-        QString url(argv[i]);
-        currWebView()->load(QUrl(url));
-        urlEdit->setText(url);
+        // add a tab for each url given at the commandline
+        for (int i = 1; i < argc; i++)
+        {
+            QString url(argv[i]);
+            addTab(url);
+        }
+    }
+    else // add a blank tab
+    {
+        addTab(0);
+        urlEdit->setFocus();
     }
 }
 
@@ -57,10 +60,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 break;
             // add tab
             case Qt::Key_T:
-                tabWidget->addTab(new QWebView(), "New Tab");
-                tabWidget->setCurrentIndex(tabWidget->count() - 1);
-                connect(currWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
-                urlEdit->selectAll();
+                addTab(0);
+                urlEdit->setText("");
                 urlEdit->setFocus();
                 break;
             // focus next/previous tab
@@ -162,8 +163,21 @@ void MainWindow::currWebView_loadFinished(bool ok)
     {
         QWebView* signalView = (QWebView*) QObject::sender();
         if (signalView != 0)
+        {
             updateURLandTitle(signalView, signalView == currWebView());
+            signalView->setFocus();
+        }
     }
+}
+
+void MainWindow::addTab(QString url)
+{
+    // add tab with QWebView, select it, connect it and open url if given
+    tabWidget->addTab(new QWebView(), "New Tab");
+    tabWidget->setCurrentIndex(tabWidget->count() - 1);
+    connect(currWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
+    if (!url.isNull())
+        currWebView()->load(QUrl(url));
 }
 
 QWebView* MainWindow::currWebView()

@@ -10,7 +10,7 @@ but it will eventually move to QWebEngineView (Chromium).
 
 - fast startup and browsing, light on system resources
 - slim userinterface with tabs
-- opens an URL provided as a commandline argument or entered in the location bar
+- opens a given number of URLs provided as commandline arguments on startup
 - keybindings similar to Firefox
 - search the current page
 - content zoom
@@ -44,9 +44,9 @@ Run *qmake* and *make* afterwards:
 
     qmake & make
 
-Run the *breasy* binary and optionally provide an URL to open:
+Run the *breasy* binary and optionally provide some URLs to open:
     
-    ./breasy https://github.com/okraits/breasy
+    ./breasy https://github.com/okraits/breasy http://archlinux.org
 
 ### Usage
 
@@ -109,17 +109,17 @@ GNU General Public License v2:
 
 ### Todo list
 
-- open several tabs with urls provided as commandline arguments
-- focus webview after page has loaded
 - adblock
 - page loadstatus indicator
 - keyword based search
 - save settings and keybindings in a configuration file
 - scripting interface
-- validate URLs
+- complete (http://) and validate URLs
 - URL autocompletion based on permanent browsing history
 - enable plugins
 - go back/forward for the search page function
 - middle mouse button opens link in new tab
 - set useragent string and accepted language
 - show URL of the link under the mousepointer in the location bar
+- mark https connections in the location bar (textcolor green)
+- show favicon in location bar

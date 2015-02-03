@@ -15,7 +15,7 @@ class MainWindow : public QWidget
 public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void openCliUrls(int argc, char *argv[]);
+    void processCliUrls(int argc, char *argv[]);
 
 private slots:
     void urlEdit_returnPressed();
@@ -28,6 +28,7 @@ protected:
 private:
     QLineEdit* urlEdit;
     QTabWidget* tabWidget;
+    void addTab(QString url);
     QWebView* currWebView();
     void updateURLandTitle(QWebView* webView, bool windowTitle);
 };
