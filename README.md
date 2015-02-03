@@ -9,7 +9,8 @@ but it will eventually move to QWebEngineView (Chromium).
 ### Features (currently implemented)
 
 - fast startup and browsing, light on system resources
-- provide an URL to load as a commandline argument or enter one in the location bar
+- slim userinterface with tabs
+- opens an URL provided as a commandline argument or entered in the location bar
 - keybindings similar to Firefox
 - search the current page
 - content zoom
@@ -59,7 +60,19 @@ To load the URL just entered in the location bar:
 
     RETURN
 
-To close the current window:
+To create a new tab:
+
+    CTRL + t
+
+To go to the next tab:
+
+    CTRL + Page Down
+
+To go to the previous tab:
+
+    CTRL + Page Up
+
+To close the current tab (or window, if you are on the last remaining tab):
 
     CTRL + w
 
@@ -96,9 +109,8 @@ GNU General Public License v2:
 
 ### Todo list
 
-- tabbed interface
+- open several tabs with urls provided as commandline arguments
 - focus webview after page has loaded
-- set tab title after page has loaded
 - adblock
 - page loadstatus indicator
 - keyword based search
