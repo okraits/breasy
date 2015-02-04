@@ -139,14 +139,7 @@ void MainWindow::urlEdit_returnPressed()
         currWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument);
     else // open the URL entered
     {
-        // add http prefix to the url if missing
-        if (!urlEdit->text().startsWith("http"))
-        {
-            QString url = "http://" + urlEdit->text();
-            currWebView()->load(QUrl(url));
-        }
-        else
-            currWebView()->load(QUrl(urlEdit->text()));
+        currWebView()->load(evaluateURL(urlEdit->text()));
     }
 }
 
@@ -170,6 +163,19 @@ void MainWindow::currWebView_loadFinished(bool ok)
     }
 }
 
+QUrl MainWindow::evaluateURL(QString url)
+{
+    QString fixedUrl;
+    // add http prefix to the url if missing
+    if (!url.startsWith("http"))
+        fixedUrl = "http://" + url;
+    else
+        fixedUrl = url;
+    // update urlEdit
+    urlEdit->setText(fixedUrl);
+    return QUrl(fixedUrl);
+}
+
 void MainWindow::addTab(QString url)
 {
     // add tab with QWebView, select it, connect it and open url if given
@@ -177,7 +183,7 @@ void MainWindow::addTab(QString url)
     tabWidget->setCurrentIndex(tabWidget->count() - 1);
     connect(currWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
     if (!url.isNull())
-        currWebView()->load(QUrl(url));
+        currWebView()->load(evaluateURL(url));
 }
 
 QWebView* MainWindow::currWebView()

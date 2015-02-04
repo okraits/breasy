@@ -28,6 +28,7 @@ protected:
 private:
     QLineEdit* urlEdit;
     QTabWidget* tabWidget;
+    QUrl evaluateURL(QString url);
     void addTab(QString url);
     QWebView* currWebView();
     void updateURLandTitle(QWebView* webView, bool windowTitle);
