@@ -5,21 +5,33 @@ MainWindow::MainWindow(QWidget *parent)
 {
     // create widgets
     urlEdit = new QLineEdit();
+    loadProgress = new QProgressBar();
     tabWidget = new QTabWidget();
-    QVBoxLayout *layout = new QVBoxLayout();
+    addressLayout = new QHBoxLayout();
+    mainLayout = new QVBoxLayout();
 
     // connect signals and slots
     connect(urlEdit, SIGNAL(returnPressed()), this, SLOT(urlEdit_returnPressed()));
     connect(tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabWidget_currentChanged(int)));
 
     // layout window
-    layout->setMargin(0);
-    layout->setSpacing(0);
-    layout->addWidget(urlEdit);
-    layout->addWidget(tabWidget);
-    this->setLayout(layout);
+    addressLayout->setMargin(2);
+    addressLayout->setSpacing(2);
+    addressLayout->addWidget(urlEdit);
+    addressLayout->addWidget(loadProgress);
+    mainLayout->setMargin(0);
+    mainLayout->setSpacing(0);
+    mainLayout->addLayout(addressLayout);
+    mainLayout->addWidget(tabWidget);
+    this->setLayout(mainLayout);
 
-    // prepare window for startup
+    // initializations
+    loadProgress->setFixedWidth(100);
+    loadProgress->setTextVisible(false);
+    loadProgress->setMinimum(0);
+    loadProgress->setMaximum(100);
+    loadProgress->reset();
+    tabWidget->setTabBarAutoHide(true);
     this->setWindowTitle("breasy");
 }
 
@@ -147,7 +159,21 @@ void MainWindow::tabWidget_currentChanged(int index)
 {
     // set url in location bar and title in tab and window title, if needed
     if (!tabWidget->tabText(tabWidget->currentIndex()).startsWith("New Tab",Qt::CaseSensitive))
+    {
         updateURLandTitle(currWebView(), true);
+        loadProgress->setValue(100); // pretend that page is loaded
+    } else
+        loadProgress->reset(); // no page has been loaded on a new tab
+}
+
+void MainWindow::currWebView_loadProgress(int progress)
+{
+    QWebView* signalView = (QWebView*) QObject::sender();
+    // set progress bar if current web view
+    if (currWebView() == signalView)
+    {
+        loadProgress->setValue(progress);
+    }
 }
 
 void MainWindow::currWebView_loadFinished(bool ok)
@@ -181,6 +207,7 @@ void MainWindow::addTab(QString url)
     // add tab with QWebView, select it, connect it and open url if given
     tabWidget->addTab(new QWebView(), "New Tab");
     tabWidget->setCurrentIndex(tabWidget->count() - 1);
+    connect(currWebView(), SIGNAL(loadProgress(int)), this, SLOT(currWebView_loadProgress(int)));
     connect(currWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
     if (!url.isNull())
         currWebView()->load(evaluateURL(url));
@@ -214,5 +241,8 @@ void MainWindow::updateURLandTitle(QWebView* webView, bool windowTitle)
 MainWindow::~MainWindow()
 {
     delete(urlEdit);
+    delete(loadProgress);
     delete(tabWidget);
+    delete(addressLayout);
+    delete(mainLayout);
 }

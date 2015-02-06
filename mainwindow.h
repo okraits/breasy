@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLineEdit>
+#include <QProgressBar>
 #include <QTabWidget>
 #include <QWebView>
 #include <QVBoxLayout>
@@ -20,13 +21,17 @@ public:
 private slots:
     void urlEdit_returnPressed();
     void tabWidget_currentChanged(int index);
+    void currWebView_loadProgress(int progress);
     void currWebView_loadFinished(bool ok);
 
 protected:
     void keyPressEvent(QKeyEvent *event);
 
 private:
+    QHBoxLayout* addressLayout;
+    QVBoxLayout* mainLayout;
     QLineEdit* urlEdit;
+    QProgressBar* loadProgress;
     QTabWidget* tabWidget;
     QUrl evaluateURL(QString url);
     void addTab(QString url);
