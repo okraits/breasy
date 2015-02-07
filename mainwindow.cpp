@@ -223,10 +223,17 @@ void MainWindow::addTab(QString url)
     // add tab with QWebView, select it, connect it and open url if given
     tabWidget->addTab(new QWebView(), "New Tab");
     tabWidget->setCurrentIndex(tabWidget->count() - 1);
+    configureWebView();
     connect(currWebView(), SIGNAL(loadProgress(int)), this, SLOT(currWebView_loadProgress(int)));
     connect(currWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
     if (!url.isNull())
         currWebView()->load(evaluateURL(url));
+}
+
+void MainWindow::configureWebView()
+{
+    QWebSettings* settings = currWebView()->settings()->globalSettings();
+    settings->setAttribute(QWebSettings::PluginsEnabled, true);
 }
 
 QWebView* MainWindow::currWebView()

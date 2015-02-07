@@ -115,7 +115,6 @@ GNU General Public License v2:
 - scripting interface
 - complete (http://) and validate URLs
 - URL autocompletion based on permanent browsing history
-- enable plugins
 - middle mouse button opens link in new tab
 - set useragent string and accepted language
 - show URL of the link under the mousepointer in the location bar

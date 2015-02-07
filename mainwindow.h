@@ -35,6 +35,7 @@ private:
     QTabWidget* tabWidget;
     QUrl evaluateURL(QString url);
     void addTab(QString url);
+    void configureWebView();
     QWebView* currWebView();
     void updateURLandTitle(QWebView* webView, bool windowTitle);
     void searchPage(bool forward);
