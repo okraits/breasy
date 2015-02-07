@@ -126,6 +126,18 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 QWidget::keyPressEvent(event);
         }
     }
+    else if (event->modifiers() & Qt::ShiftModifier)
+    {
+        switch (event->key())
+        {
+            // search page backward
+            case Qt::Key_F3:
+                searchPage(false);
+                break;
+            default:
+                QWidget::keyPressEvent(event);
+        }
+    }
     else
     {
         switch (event->key())
@@ -133,6 +145,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             // stop page loading
             case Qt::Key_Escape:
                 currWebView()->stop();
+                break;
+            // search page forward
+            case Qt::Key_F3:
+                searchPage(true);
                 break;
             // reload page
             case Qt::Key_F5:
@@ -148,7 +164,7 @@ void MainWindow::urlEdit_returnPressed()
 {
     // "/" at the beginning means searching the page for text
     if (urlEdit->text().at(0) == QString("/"))
-        currWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument);
+        searchPage(true);
     else // open the URL entered
     {
         currWebView()->load(evaluateURL(urlEdit->text()));
@@ -236,6 +252,19 @@ void MainWindow::updateURLandTitle(QWebView* webView, bool windowTitle)
     // also set window title if this is the current tab
     if (windowTitle)
         this->setWindowTitle(webView->title() + " - breasy");
+}
+
+void MainWindow::searchPage(bool forward)
+{
+    // check if "search mode" is active
+    if (urlEdit->text().at(0) == QString("/"))
+    {
+        if (forward)
+            currWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument);
+        else
+            currWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument|
+                                                            QWebPage::FindBackward);
+    }
 }
 
 MainWindow::~MainWindow()

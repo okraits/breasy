@@ -37,6 +37,7 @@ private:
     void addTab(QString url);
     QWebView* currWebView();
     void updateURLandTitle(QWebView* webView, bool windowTitle);
+    void searchPage(bool forward);
 };
 
 #endif // MAINWINDOW_H
