@@ -184,7 +184,7 @@ void MainWindow::tabWidget_currentChanged(int index)
 
 void MainWindow::currWebView_loadProgress(int progress)
 {
-    QWebView* signalView = (QWebView*) QObject::sender();
+    WebView* signalView = (WebView*) QObject::sender();
     // set progress bar if current web view
     if (currWebView() == signalView)
     {
@@ -196,7 +196,7 @@ void MainWindow::currWebView_loadFinished(bool ok)
 {
     if (ok) // page loading was successful
     {
-        QWebView* signalView = (QWebView*) QObject::sender();
+        WebView* signalView = (WebView*) QObject::sender();
         if (signalView != 0)
         {
             updateURLandTitle(signalView, signalView == currWebView());
@@ -220,8 +220,8 @@ QUrl MainWindow::evaluateURL(QString url)
 
 void MainWindow::addTab(QString url)
 {
-    // add tab with QWebView, select it, connect it and open url if given
-    tabWidget->addTab(new QWebView(), "New Tab");
+    // add tab with WebView, select it, connect it and open url if given
+    tabWidget->addTab(new WebView(), "New Tab");
     tabWidget->setCurrentIndex(tabWidget->count() - 1);
     configureWebView();
     connect(currWebView(), SIGNAL(loadProgress(int)), this, SLOT(currWebView_loadProgress(int)));
@@ -230,18 +230,18 @@ void MainWindow::addTab(QString url)
         currWebView()->load(evaluateURL(url));
 }
 
-void MainWindow::configureWebView()
+void MainWindow::configureWebView() // TODO: member method of WebView
 {
     QWebSettings* settings = currWebView()->settings()->globalSettings();
     settings->setAttribute(QWebSettings::PluginsEnabled, true);
 }
 
-QWebView* MainWindow::currWebView()
+WebView* MainWindow::currWebView()
 {
-    return (QWebView*) tabWidget->currentWidget();
+    return (WebView*) tabWidget->currentWidget();
 }
 
-void MainWindow::updateURLandTitle(QWebView* webView, bool windowTitle)
+void MainWindow::updateURLandTitle(WebView* webView, bool windowTitle)
 {
     // set url in urlEdit
     urlEdit->setText(webView->url().toString());

@@ -120,3 +120,5 @@ GNU General Public License v2:
 - show URL of the link under the mousepointer in the location bar
 - mark https connections in the location bar (textcolor green)
 - show favicon in location bar
+- detect a running breasy instance and open a new tab
+- show load progress as a filling background of the location bar

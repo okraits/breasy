@@ -7,6 +7,8 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    webview.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    webview.h

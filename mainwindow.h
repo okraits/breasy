@@ -5,7 +5,7 @@
 #include <QLineEdit>
 #include <QProgressBar>
 #include <QTabWidget>
-#include <QWebView>
+#include "webview.h"
 #include <QVBoxLayout>
 #include <QKeyEvent>
 
@@ -36,8 +36,8 @@ private:
     QUrl evaluateURL(QString url);
     void addTab(QString url);
     void configureWebView();
-    QWebView* currWebView();
-    void updateURLandTitle(QWebView* webView, bool windowTitle);
+    WebView* currWebView();
+    void updateURLandTitle(WebView* webView, bool windowTitle);
     void searchPage(bool forward);
 };
 
