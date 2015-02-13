@@ -14,6 +14,7 @@ but it will eventually move to QWebEngineView (Chromium).
 - keybindings similar to Firefox
 - search the current page
 - content zoom
+- browser plugins are enabled
 
 For upcoming features, take a look at the todo list further down this page and stay tuned.
 
@@ -76,6 +77,10 @@ To close the current tab (or window, if you are on the last remaining tab):
 
     CTRL + w
 
+To open a link in a new tab:
+
+	Middle Mousebutton or CTRL + Left Mousebutton
+
 To reload the current page:
 
     CTRL + r or F5
@@ -115,10 +120,10 @@ GNU General Public License v2:
 - scripting interface
 - complete (http://) and validate URLs
 - URL autocompletion based on permanent browsing history
-- middle mouse button opens link in new tab
 - set useragent string and accepted language
 - show URL of the link under the mousepointer in the location bar
 - mark https connections in the location bar (textcolor green)
 - show favicon in location bar
 - detect a running breasy instance and open a new tab
 - show load progress as a filling background of the location bar
+- content zoom must affect all existing webviews

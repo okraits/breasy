@@ -9,6 +9,8 @@
 #include <QVBoxLayout>
 #include <QKeyEvent>
 
+class WebView;
+
 class MainWindow : public QWidget
 {
     Q_OBJECT
@@ -17,6 +19,7 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void processCliUrls(int argc, char *argv[]);
+    void addTab(QString url);
 
 private slots:
     void urlEdit_returnPressed();
@@ -34,7 +37,6 @@ private:
     QProgressBar* loadProgress;
     QTabWidget* tabWidget;
     QUrl evaluateURL(QString url);
-    void addTab(QString url);
     void configureWebView();
     WebView* currWebView();
     void updateURLandTitle(WebView* webView, bool windowTitle);
