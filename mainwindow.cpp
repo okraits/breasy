@@ -92,20 +92,20 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             // remove tab
             case Qt::Key_W:
                 if (tabWidget->count() > 1)
-                    currWebView()->deleteLater();
+                    currentWebView()->deleteLater();
                 else
                     this->close();
                 break;
             // reload page
             case Qt::Key_R:
-                currWebView()->reload();
+                currentWebView()->reload();
                 break;
             // zoom in/out
             case Qt::Key_Plus:
-                currWebView()->setZoomFactor(currWebView()->zoomFactor() + 0.1);
+                currentWebView()->setZoomFactor(currentWebView()->zoomFactor() + 0.1);
                 break;
             case Qt::Key_Minus:
-                currWebView()->setZoomFactor(currWebView()->zoomFactor() - 0.1);
+                currentWebView()->setZoomFactor(currentWebView()->zoomFactor() - 0.1);
                 break;
             default:
                 QWidget::keyPressEvent(event);
@@ -117,10 +117,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         {
             // go back/forward in the history
             case Qt::Key_Left:
-                currWebView()->back();
+                currentWebView()->back();
                 break;
             case Qt::Key_Right:
-                currWebView()->forward();
+                currentWebView()->forward();
                 break;
             default:
                 QWidget::keyPressEvent(event);
@@ -132,7 +132,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         {
             // search page backward
             case Qt::Key_F3:
-                searchPage(false);
+                searchText(false);
                 break;
             default:
                 QWidget::keyPressEvent(event);
@@ -144,15 +144,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         {
             // stop page loading
             case Qt::Key_Escape:
-                currWebView()->stop();
+                currentWebView()->stop();
                 break;
             // search page forward
             case Qt::Key_F3:
-                searchPage(true);
+                searchText(true);
                 break;
             // reload page
             case Qt::Key_F5:
-                currWebView()->reload();
+                currentWebView()->reload();
                 break;
             default:
                 QWidget::keyPressEvent(event);
@@ -164,10 +164,10 @@ void MainWindow::urlEdit_returnPressed()
 {
     // "/" at the beginning means searching the page for text
     if (urlEdit->text().at(0) == QString("/"))
-        searchPage(true);
+        searchText(true);
     else // open the URL entered
     {
-        currWebView()->load(evaluateURL(urlEdit->text()));
+        currentWebView()->load(evaluateUrl(urlEdit->text()));
     }
 }
 
@@ -176,7 +176,7 @@ void MainWindow::tabWidget_currentChanged(int index)
     // set url in location bar and title in tab and window title, if needed
     if (!tabWidget->tabText(tabWidget->currentIndex()).startsWith("New Tab",Qt::CaseSensitive))
     {
-        updateURLandTitle(currWebView(), true);
+        setPageInfos(currentWebView(), true);
         loadProgress->setValue(100); // pretend that page is loaded
     } else
         loadProgress->reset(); // no page has been loaded on a new tab
@@ -186,7 +186,7 @@ void MainWindow::currWebView_loadProgress(int progress)
 {
     WebView* signalView = (WebView*) QObject::sender();
     // set progress bar if current web view
-    if (currWebView() == signalView)
+    if (currentWebView() == signalView)
     {
         loadProgress->setValue(progress);
     }
@@ -199,13 +199,13 @@ void MainWindow::currWebView_loadFinished(bool ok)
         WebView* signalView = (WebView*) QObject::sender();
         if (signalView != 0)
         {
-            updateURLandTitle(signalView, signalView == currWebView());
+            setPageInfos(signalView, signalView == currentWebView());
             signalView->setFocus();
         }
     }
 }
 
-QUrl MainWindow::evaluateURL(QString url)
+QUrl MainWindow::evaluateUrl(QString url)
 {
     QString fixedUrl;
     // add http prefix to the url if missing
@@ -224,24 +224,24 @@ void MainWindow::addTab(QString url)
     tabWidget->addTab(new WebView(), "New Tab");
     tabWidget->setCurrentIndex(tabWidget->count() - 1);
     configureWebView();
-    connect(currWebView(), SIGNAL(loadProgress(int)), this, SLOT(currWebView_loadProgress(int)));
-    connect(currWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
+    connect(currentWebView(), SIGNAL(loadProgress(int)), this, SLOT(currWebView_loadProgress(int)));
+    connect(currentWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
     if (!url.isNull())
-        currWebView()->load(evaluateURL(url));
+        currentWebView()->load(evaluateUrl(url));
 }
 
 void MainWindow::configureWebView() // TODO: member method of WebView
 {
-    QWebSettings* settings = currWebView()->settings()->globalSettings();
+    QWebSettings* settings = currentWebView()->settings()->globalSettings();
     settings->setAttribute(QWebSettings::PluginsEnabled, true);
 }
 
-WebView* MainWindow::currWebView()
+WebView* MainWindow::currentWebView()
 {
     return (WebView*) tabWidget->currentWidget();
 }
 
-void MainWindow::updateURLandTitle(WebView* webView, bool windowTitle)
+void MainWindow::setPageInfos(WebView* webView, bool windowTitle)
 {
     // set url in urlEdit
     urlEdit->setText(webView->url().toString());
@@ -261,15 +261,15 @@ void MainWindow::updateURLandTitle(WebView* webView, bool windowTitle)
         this->setWindowTitle(webView->title() + " - breasy");
 }
 
-void MainWindow::searchPage(bool forward)
+void MainWindow::searchText(bool forward)
 {
     // check if "search mode" is active
     if (urlEdit->text().at(0) == QString("/"))
     {
         if (forward)
-            currWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument);
+            currentWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument);
         else
-            currWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument|
+            currentWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument|
                                                             QWebPage::FindBackward);
     }
 }

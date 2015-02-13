@@ -36,11 +36,11 @@ private:
     QLineEdit* urlEdit;
     QProgressBar* loadProgress;
     QTabWidget* tabWidget;
-    QUrl evaluateURL(QString url);
+    QUrl evaluateUrl(QString url);
     void configureWebView();
-    WebView* currWebView();
-    void updateURLandTitle(WebView* webView, bool windowTitle);
-    void searchPage(bool forward);
+    WebView* currentWebView();
+    void setPageInfos(WebView* webView, bool windowTitle);
+    void searchText(bool forward);
 };
 
 #endif // MAINWINDOW_H

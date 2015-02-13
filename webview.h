@@ -13,7 +13,7 @@ class WebPage : public QWebPage {
 
 public:
     WebPage(QObject *parent = 0);
-    MainWindow *mainWindow();
+    MainWindow *parentWindow();
 
 protected:
     bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type);

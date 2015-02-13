@@ -6,7 +6,7 @@ WebPage::WebPage(QObject *parent)
 {
 }
 
-MainWindow *WebPage::mainWindow()
+MainWindow *WebPage::parentWindow()
 {
     QObject *w = this->parent();
     while (w) {
@@ -24,7 +24,7 @@ bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &r
     if (type == QWebPage::NavigationTypeLinkClicked
         && (keyboardModifiers & Qt::ControlModifier
             || pressedMouseButtons == Qt::MidButton)) {
-        mainWindow()->addTab(request.url().toString());
+        parentWindow()->addTab(request.url().toString());
         keyboardModifiers = Qt::NoModifier;
         pressedMouseButtons = Qt::NoButton;
         return false;
