@@ -21,14 +21,14 @@ public:
     void processCliUrls(int argc, char *argv[]);
     void addTab(QString url);
 
+protected:
+    void keyPressEvent(QKeyEvent *event);
+
 private slots:
     void urlEdit_returnPressed();
     void tabWidget_currentChanged(int index);
     void currWebView_loadProgress(int progress);
     void currWebView_loadFinished(bool ok);
-
-protected:
-    void keyPressEvent(QKeyEvent *event);
 
 private:
     QHBoxLayout* addressLayout;
@@ -36,6 +36,7 @@ private:
     QLineEdit* urlEdit;
     QProgressBar* loadProgress;
     QTabWidget* tabWidget;
+
     QUrl evaluateUrl(QString url);
     void configureWebView();
     WebView* currentWebView();

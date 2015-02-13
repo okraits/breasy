@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 
+// public #############################
+
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
@@ -35,6 +37,15 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle("breasy");
 }
 
+MainWindow::~MainWindow()
+{
+    delete(urlEdit);
+    delete(loadProgress);
+    delete(tabWidget);
+    delete(addressLayout);
+    delete(mainLayout);
+}
+
 void MainWindow::processCliUrls(int argc, char *argv[])
 {
     if (argc > 1) // if at least one url is given at the commandline
@@ -52,6 +63,20 @@ void MainWindow::processCliUrls(int argc, char *argv[])
         urlEdit->setFocus();
     }
 }
+
+void MainWindow::addTab(QString url)
+{
+    // add tab with WebView, select it, connect it and open url if given
+    tabWidget->addTab(new WebView(), "New Tab");
+    tabWidget->setCurrentIndex(tabWidget->count() - 1);
+    configureWebView();
+    connect(currentWebView(), SIGNAL(loadProgress(int)), this, SLOT(currWebView_loadProgress(int)));
+    connect(currentWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
+    if (!url.isNull())
+        currentWebView()->load(evaluateUrl(url));
+}
+
+// protected #############################
 
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
@@ -160,6 +185,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
 }
 
+// private slots #############################
+
 void MainWindow::urlEdit_returnPressed()
 {
     // "/" at the beginning means searching the page for text
@@ -205,6 +232,8 @@ void MainWindow::currWebView_loadFinished(bool ok)
     }
 }
 
+// private #############################
+
 QUrl MainWindow::evaluateUrl(QString url)
 {
     QString fixedUrl;
@@ -216,18 +245,6 @@ QUrl MainWindow::evaluateUrl(QString url)
     // update urlEdit
     urlEdit->setText(fixedUrl);
     return QUrl(fixedUrl);
-}
-
-void MainWindow::addTab(QString url)
-{
-    // add tab with WebView, select it, connect it and open url if given
-    tabWidget->addTab(new WebView(), "New Tab");
-    tabWidget->setCurrentIndex(tabWidget->count() - 1);
-    configureWebView();
-    connect(currentWebView(), SIGNAL(loadProgress(int)), this, SLOT(currWebView_loadProgress(int)));
-    connect(currentWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
-    if (!url.isNull())
-        currentWebView()->load(evaluateUrl(url));
 }
 
 void MainWindow::configureWebView() // TODO: member method of WebView
@@ -272,13 +289,4 @@ void MainWindow::searchText(bool forward)
             currentWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument|
                                                             QWebPage::FindBackward);
     }
-}
-
-MainWindow::~MainWindow()
-{
-    delete(urlEdit);
-    delete(loadProgress);
-    delete(tabWidget);
-    delete(addressLayout);
-    delete(mainLayout);
 }
