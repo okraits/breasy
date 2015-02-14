@@ -73,7 +73,7 @@ void MainWindow::addTab(QString url)
     connect(currentWebView(), SIGNAL(loadProgress(int)), this, SLOT(currWebView_loadProgress(int)));
     connect(currentWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
     if (!url.isNull())
-        currentWebView()->load(evaluateUrl(url));
+        currentWebView()->load(processUrl(url));
 }
 
 // protected #############################
@@ -194,7 +194,7 @@ void MainWindow::urlEdit_returnPressed()
         searchText(true);
     else // open the URL entered
     {
-        currentWebView()->load(evaluateUrl(urlEdit->text()));
+        currentWebView()->load(processUrl(urlEdit->text()));
     }
 }
 
@@ -234,17 +234,12 @@ void MainWindow::currWebView_loadFinished(bool ok)
 
 // private #############################
 
-QUrl MainWindow::evaluateUrl(QString url)
+QUrl MainWindow::processUrl(QString url)
 {
-    QString fixedUrl;
-    // add http prefix to the url if missing
-    if (!url.startsWith("http"))
-        fixedUrl = "http://" + url;
-    else
-        fixedUrl = url;
+    QUrl validatedUrl = QUrl::fromUserInput(url);
     // update urlEdit
-    urlEdit->setText(fixedUrl);
-    return QUrl(fixedUrl);
+    urlEdit->setText(validatedUrl.toString());
+    return validatedUrl;
 }
 
 void MainWindow::configureWebView() // TODO: member method of WebView
@@ -263,9 +258,9 @@ void MainWindow::setPageInfos(WebView* webView, bool windowTitle)
     // set url in urlEdit
     urlEdit->setText(webView->url().toString());
     // set page title as tab text
-    if (webView->title().length() > 50)
+    if (webView->title().length() > 30)
     {
-        QString shortTitle = webView->title().left(50); // only show first 50 chars of page title
+        QString shortTitle = webView->title().left(30); // only show first 30 chars of page title
         shortTitle += "...";
         tabWidget->setTabText(tabWidget->indexOf(webView), shortTitle);
     }

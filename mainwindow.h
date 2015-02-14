@@ -37,7 +37,7 @@ private:
     QProgressBar* loadProgress;
     QTabWidget* tabWidget;
 
-    QUrl evaluateUrl(QString url);
+    QUrl processUrl(QString url);
     void configureWebView();
     WebView* currentWebView();
     void setPageInfos(WebView* webView, bool windowTitle);

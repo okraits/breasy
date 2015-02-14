@@ -127,3 +127,4 @@ GNU General Public License v2:
 - detect a running breasy instance and open a new tab
 - show load progress as a filling background of the location bar
 - content zoom must affect all existing webviews
+- share websession across several webviews
