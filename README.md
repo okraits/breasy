@@ -107,6 +107,10 @@ To go to the next page in the browsing history:
 
     ALT + Right
 
+To load the startpage defined in the configuration file:
+
+	ALT + Home
+
 To stop the current page from loading:
 
     ESC

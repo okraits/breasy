@@ -150,6 +150,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             case Qt::Key_Right:
                 currentWebView()->forward();
                 break;
+            // load startpage
+            case Qt::Key_Home:
+                currentWebView()->load(processUrl(settings->getValue(SK_STARTPAGE).toString()));
+                break;
             default:
                 QWidget::keyPressEvent(event);
         }
