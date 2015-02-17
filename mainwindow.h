@@ -2,13 +2,16 @@
 #define MAINWINDOW_H
 
 #include <QWidget>
+#include <QSettings>
 #include <QLineEdit>
 #include <QProgressBar>
 #include <QTabWidget>
-#include "webview.h"
 #include <QVBoxLayout>
 #include <QKeyEvent>
+#include "settings.h"
+#include "webview.h"
 
+class Settings;
 class WebView;
 
 class MainWindow : public QWidget
@@ -23,6 +26,7 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 
 private slots:
     void urlEdit_returnPressed();
@@ -31,6 +35,7 @@ private slots:
     void currWebView_loadFinished(bool ok);
 
 private:
+    Settings* settings;
     QHBoxLayout* addressLayout;
     QVBoxLayout* mainLayout;
     QLineEdit* urlEdit;

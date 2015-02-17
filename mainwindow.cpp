@@ -5,7 +5,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
-    // create widgets
+    // create objects
+    settings = new Settings();
     urlEdit = new QLineEdit();
     loadProgress = new QProgressBar();
     tabWidget = new QTabWidget();
@@ -28,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setLayout(mainLayout);
 
     // initializations
+    settings->readSettings();
     loadProgress->setFixedWidth(100);
     loadProgress->setTextVisible(false);
     loadProgress->setMinimum(0);
@@ -39,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    delete(settings);
     delete(urlEdit);
     delete(loadProgress);
     delete(tabWidget);
@@ -59,7 +62,7 @@ void MainWindow::processCliUrls(int argc, char *argv[])
     }
     else // add a blank tab
     {
-        addTab(0);
+        addTab(settings->getValue(SK_STARTPAGE).toString());
         urlEdit->setFocus();
     }
 }
@@ -183,6 +186,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 QWidget::keyPressEvent(event);
         }
     }
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    settings->writeSettings();
+    event->accept();
 }
 
 // private slots #############################
