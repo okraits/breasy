@@ -2,9 +2,25 @@
 #define SETTINGS_H
 
 #include <QObject>
+#include <QList>
+#include <QStringList>
 #include "mainwindow.h"
 
-#define SK_STARTPAGE "global/startpage"
+#define SK_STARTPAGE        "global/startpage"
+#define SK_KEYWORDSEARCH    "keywordsearch"
+
+struct KeywordSearch
+{
+    KeywordSearch(){}
+    KeywordSearch(QString keywordIn, QString searchstringIn)
+    {
+        keyword = keywordIn;
+        searchstring = searchstringIn;
+    }
+
+    QString keyword;
+    QString searchstring;
+};
 
 class Settings : public QObject
 {
@@ -17,9 +33,11 @@ public:
     void writeSettings();
     QVariant getValue(const QString & key);
     void setValue(const QString & key, const QVariant & value);
+    QString getSearchString(const QString & input);
 
 private:
     QSettings* userSettings;
+    QList<KeywordSearch>* searchStringList;
 };
 
 #endif // SETTINGS_H

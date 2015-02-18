@@ -13,6 +13,7 @@ but it will eventually move to QWebEngineView (Chromium).
 - opens a given number of URLs provided as commandline arguments on startup
 - default keybindings similar to Firefox
 - search the current page
+- keyword based search: enter "wi linux" to search wikipedia for "linux"
 - content zoom
 - browser plugins are enabled
 - simple text configuration file
@@ -56,6 +57,12 @@ Run the *breasy* binary and optionally provide some URLs to open:
 
 To modify the default settings, edit the file *$HOME/.config/breasy/breasy.conf*.
 It is created on startup if it doesn't exist.
+
+For keyword based searching, add a section *keywordsearch*:
+
+	[keywordsearch]
+	go="https://www.google.de/?gws_rd=ssl#q=%s"
+	wi="https://de.wikipedia.org/w/index.php?title=Special:Search&search=%s"
 
 #### Keybindings
 
@@ -125,7 +132,6 @@ GNU General Public License v2:
 ### Todo list
 
 - adblock
-- keyword based search
 - save settings and keybindings in a configuration file
 - scripting interface
 - URL autocompletion based on permanent browsing history

@@ -205,9 +205,14 @@ void MainWindow::urlEdit_returnPressed()
     // "/" at the beginning means searching the page for text
     if (urlEdit->text().at(0) == QString("/"))
         searchText(true);
-    else // open the URL entered
+    else
     {
-        currentWebView()->load(processUrl(urlEdit->text()));
+        // check if a keyword search was initiated
+        QString searchstring = settings->getSearchString(urlEdit->text());
+        if (searchstring != "")
+            currentWebView()->load(processUrl(searchstring));
+        else // simply open the URL entered
+            currentWebView()->load(processUrl(urlEdit->text()));
     }
 }
 
