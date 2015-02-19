@@ -18,7 +18,7 @@ but it will eventually move to QWebEngineView (Chromium).
 - browser plugins are enabled
 - simple text configuration file
 
-For upcoming features, take a look at the todo list further down this page and stay tuned.
+For upcoming features, take a look at the [todo list](#todo-list) and stay tuned.
 
 ### Why another browser?
 
@@ -129,17 +129,18 @@ GNU General Public License v2:
 
 [http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt](http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt)
 
-### Todo list
+### Todo list (in descending, but not absolute order)
 
+- detect a running breasy instance and open a new tab
+- share websession across several webviews
 - adblock
-- save settings and keybindings in a configuration file
+- content zoom must affect all existing webviews
 - scripting interface
-- URL autocompletion based on permanent browsing history
+- open local files
+- save keybindings in configuration file
 - set useragent string and accepted language
+- URL autocompletion based on permanent browsing history
 - show URL of the link under the mousepointer in the location bar
 - mark https connections in the location bar (textcolor green)
 - show favicon in location bar
-- detect a running breasy instance and open a new tab
 - show load progress as a filling background of the location bar
-- content zoom must affect all existing webviews
-- share websession across several webviews
