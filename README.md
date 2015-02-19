@@ -18,7 +18,8 @@ but it will eventually move to QWebEngineView (Chromium).
 - browser plugins are enabled
 - simple text configuration file
 
-For upcoming features, take a look at the [todo list](#todo-list) and stay tuned.
+For upcoming features, take a look at the 
+[todo list](#todo-list-in-descending-but-not-absolute-order) and stay tuned.
 
 ### Why another browser?
 
