@@ -1,7 +1,7 @@
 #include "webview.h"
 
 WebPage::WebPage(QObject *parent)
-    : QWebPage(parent)
+    : QWebEnginePage(parent)
     , pressedMouseButtons(Qt::NoButton)
 {
 }
@@ -18,7 +18,8 @@ MainWindow *WebPage::parentWindow()
     return new MainWindow();
 }
 
-bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type)
+// TODO: we need to find another way to do this with QWebEngineView
+/*bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type)
 {
     // CTRL modifier or middle mousebutton -> open url in new tab
     if (type == QWebPage::NavigationTypeLinkClicked
@@ -30,10 +31,10 @@ bool WebPage::acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &r
         return false;
     }
     return QWebPage::acceptNavigationRequest(frame, request, type);
-}
+}*/
 
 WebView::WebView(QWidget* parent)
-    : QWebView(parent)
+    : QWebEngineView(parent)
     , m_page(new WebPage(this))
 {
     setPage(m_page);
@@ -44,5 +45,5 @@ void WebView::mousePressEvent(QMouseEvent *event)
     // remember the mouse button and modifier key pressed
     m_page->pressedMouseButtons = event->buttons();
     m_page->keyboardModifiers = event->modifiers();
-    QWebView::mousePressEvent(event);
+    QWebEngineView::mousePressEvent(event);
 }

@@ -262,8 +262,9 @@ QUrl MainWindow::processUrl(QString url)
 
 void MainWindow::configureWebView() // TODO: member method of WebView
 {
-    QWebSettings* settings = currentWebView()->settings()->globalSettings();
-    settings->setAttribute(QWebSettings::PluginsEnabled, true);
+    // TODO: no such attribute for QWebEngineView
+    //QWebEngineSettings* settings = currentWebView()->settings()->globalSettings();
+    //settings->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 }
 
 WebView* MainWindow::currentWebView()
@@ -297,9 +298,8 @@ void MainWindow::searchText(bool forward)
     if (urlEdit->text().at(0) == QString("/"))
     {
         if (forward)
-            currentWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument);
+            currentWebView()->findText(urlEdit->text().mid(1));
         else
-            currentWebView()->findText(urlEdit->text().mid(1), QWebPage::FindWrapsAroundDocument|
-                                                            QWebPage::FindBackward);
+            currentWebView()->findText(urlEdit->text().mid(1), QWebEnginePage::FindBackward);
     }
 }

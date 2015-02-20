@@ -1,14 +1,14 @@
 #ifndef WEBVIEW
 #define WEBVIEW
 
-#include <QWebView>
+#include <QWebEngineView>
 #include <QMouseEvent>
 #include <QNetworkRequest>
 #include "mainwindow.h"
 
 class MainWindow;
 
-class WebPage : public QWebPage {
+class WebPage : public QWebEnginePage {
     Q_OBJECT
 
 public:
@@ -16,7 +16,7 @@ public:
     MainWindow *parentWindow();
 
 protected:
-    bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type);
+    //bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type);
 
 private:
     friend class WebView;
@@ -24,7 +24,7 @@ private:
     Qt::MouseButtons pressedMouseButtons;
 };
 
-class WebView : public QWebView {
+class WebView : public QWebEngineView {
     Q_OBJECT
 
 public:
