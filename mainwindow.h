@@ -43,7 +43,6 @@ private:
     QTabWidget* tabWidget;
 
     QUrl processUrl(QString url);
-    void configureWebView();
     WebView* currentWebView();
     void setPageInfos(WebView* webView, bool windowTitle);
     void searchText(bool forward);

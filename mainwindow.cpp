@@ -69,12 +69,17 @@ void MainWindow::processCliUrls(int argc, char *argv[])
 
 void MainWindow::addTab(QString url)
 {
-    // add tab with WebView, select it, connect it and open url if given
+    // add tab with WebView, select it, apply default settings, connect it and open url if given
     tabWidget->addTab(new WebView(), "New Tab");
     tabWidget->setCurrentIndex(tabWidget->count() - 1);
-    configureWebView();
+
+    QWebSettings* globalSettings = currentWebView()->settings()->globalSettings();
+    globalSettings->setAttribute(QWebSettings::PluginsEnabled, true);
+    currentWebView()->setZoomFactor(settings->getValue(SK_ZOOM).toReal());
+
     connect(currentWebView(), SIGNAL(loadProgress(int)), this, SLOT(currWebView_loadProgress(int)));
     connect(currentWebView(), SIGNAL(loadFinished(bool)), this, SLOT(currWebView_loadFinished(bool)));
+
     if (!url.isNull())
         currentWebView()->load(processUrl(url));
 }
@@ -258,12 +263,6 @@ QUrl MainWindow::processUrl(QString url)
     // update urlEdit
     urlEdit->setText(validatedUrl.toString());
     return validatedUrl;
-}
-
-void MainWindow::configureWebView() // TODO: member method of WebView
-{
-    QWebSettings* settings = currentWebView()->settings()->globalSettings();
-    settings->setAttribute(QWebSettings::PluginsEnabled, true);
 }
 
 WebView* MainWindow::currentWebView()
