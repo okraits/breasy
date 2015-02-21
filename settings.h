@@ -7,6 +7,7 @@
 #include "mainwindow.h"
 
 #define SK_STARTPAGE        "global/startpage"
+#define SK_ZOOM             "global/zoom"
 #define SK_KEYWORDSEARCH    "keywordsearch"
 
 struct KeywordSearch

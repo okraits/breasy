@@ -2,6 +2,7 @@
 #define WEBVIEW
 
 #include <QWebEngineView>
+#include <QWebEngineSettings>
 #include <QMouseEvent>
 #include <QNetworkRequest>
 #include "mainwindow.h"

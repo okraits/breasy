@@ -19,6 +19,7 @@ void Settings::readSettings()
     {
         // otherwise set default settings
         userSettings->setValue(SK_STARTPAGE, "http://google.de");
+        userSettings->setValue(SK_ZOOM, "1.0");
     }
     else
     {
